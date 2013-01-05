@@ -7,6 +7,7 @@
 project(Diluculum)
 cmake_minimum_required(VERSION 2.6)
 
+set(DILUCULUM_BUILD_TESTS FALSE CACHE BOOL "Build unit tests.")
 
 # Add CTest support
 enable_testing()
@@ -49,46 +50,58 @@ if(${CMAKE_SYSTEM_NAME} MATCHES Linux)
 endif(${CMAKE_SYSTEM_NAME} MATCHES Linux)
 
 # Now, the unit tests
-function(AddUnitTest name)
-    add_executable(${name} Tests/${name}.cpp)
-    target_link_libraries(${name}
-                          ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-                          ${LUA_LIBRARIES}
-                          Diluculum)
-    if(${CMAKE_SYSTEM_NAME} MATCHES Linux)
-        target_link_libraries(Diluculum dl)
-    endif(${CMAKE_SYSTEM_NAME} MATCHES Linux)
-    add_test(${name} ${name})
-endfunction(AddUnitTest)
+if(DILUCULUM_BUILD_TESTS)
+  function(AddUnitTest name)
+      add_executable(${name} Tests/${name}.cpp)
+      target_link_libraries(${name}
+                            ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+                            ${LUA_LIBRARIES}
+                            Diluculum)
+      if(${CMAKE_SYSTEM_NAME} MATCHES Linux)
+          target_link_libraries(Diluculum dl)
+      endif(${CMAKE_SYSTEM_NAME} MATCHES Linux)
+      add_test(${name} ${name})
+  endfunction(AddUnitTest)
 
-add_library(ATestModule SHARED Tests/ATestModule.cpp)
-target_link_libraries(ATestModule
-    ${LUA_LIBRARIES}
-    Diluculum)
-set_target_properties(ATestModule
-    PROPERTIES PREFIX "")
+  add_library(ATestModule SHARED Tests/ATestModule.cpp)
+  target_link_libraries(ATestModule
+      ${LUA_LIBRARIES}
+      Diluculum)
+  set_target_properties(ATestModule
+      PROPERTIES PREFIX "")
 
-AddUnitTest(TestLuaFunction)
-AddUnitTest(TestLuaState)
-AddUnitTest(TestLuaUserData)
-AddUnitTest(TestLuaUtils)
-AddUnitTest(TestLuaValue)
-AddUnitTest(TestLuaVariable)
-AddUnitTest(TestLuaWrappers)
+  AddUnitTest(TestLuaFunction)
+  AddUnitTest(TestLuaState)
+  AddUnitTest(TestLuaUserData)
+  AddUnitTest(TestLuaUtils)
+  AddUnitTest(TestLuaValue)
+  AddUnitTest(TestLuaVariable)
+  AddUnitTest(TestLuaWrappers)
 
-# Copy the files needed by the unit tests
-configure_file(${CMAKE_SOURCE_DIR}/Tests/ReturnThread.lua
-    ${CMAKE_BINARY_DIR}/ReturnThread.lua
-    COPYONLY)
+  # Copy the files needed by the unit tests
+  configure_file(${CMAKE_SOURCE_DIR}/Tests/ReturnThread.lua
+      ${CMAKE_BINARY_DIR}/ReturnThread.lua
+      COPYONLY)
 
-configure_file(${CMAKE_SOURCE_DIR}/Tests/SyntaxError.lua
-    ${CMAKE_BINARY_DIR}/SyntaxError.lua
-    COPYONLY)
+  configure_file(${CMAKE_SOURCE_DIR}/Tests/SyntaxError.lua
+      ${CMAKE_BINARY_DIR}/SyntaxError.lua
+      COPYONLY)
 
-configure_file(${CMAKE_SOURCE_DIR}/Tests/TestLuaStateDoFile.lua
-    ${CMAKE_BINARY_DIR}/TestLuaStateDoFile.lua
-    COPYONLY)
+  configure_file(${CMAKE_SOURCE_DIR}/Tests/TestLuaStateDoFile.lua
+      ${CMAKE_BINARY_DIR}/TestLuaStateDoFile.lua
+      COPYONLY)
 
-configure_file(${CMAKE_SOURCE_DIR}/Tests/TestLuaStateDoFileNoReturn.lua
-    ${CMAKE_BINARY_DIR}/TestLuaStateDoFileNoReturn.lua
-    COPYONLY)
+  configure_file(${CMAKE_SOURCE_DIR}/Tests/TestLuaStateDoFileNoReturn.lua
+      ${CMAKE_BINARY_DIR}/TestLuaStateDoFileNoReturn.lua
+      COPYONLY)
+endif()
+
+# Install target.
+install(TARGETS Diluculum 
+    RUNTIME DESTINATION bin COMPONENT bin
+    LIBRARY DESTINATION lib COMPONENT bin
+    ARCHIVE DESTINATION lib COMPONENT dev)
+
+install(DIRECTORY include/Diluculum
+    DESTINATION include
+)
