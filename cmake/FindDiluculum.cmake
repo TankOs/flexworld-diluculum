@@ -22,7 +22,7 @@ endif()
 
 find_path(
 	Diluculum_INCLUDE_DIR
-	Diluculum/Config.hpp
+	Diluculum/LuaState.hpp
 	PATH_SUFFIXES
 		include
 	PATHS
