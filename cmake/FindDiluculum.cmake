@@ -55,22 +55,22 @@ find_library(
 		${Diluculum_ROOT}
 )
 
-if( Diluculum_LIBRARY_RELEASE AND FWU_LIBRARY_DEBUG )
-	set( Diluculum_LIBRARY debug ${FWU_LIBRARY_DEBUG} optimized ${FWU_LIBRARY_RELEASE} )
+if( Diluculum_LIBRARY_RELEASE AND Diluculum_LIBRARY_DEBUG )
+	set( Diluculum_LIBRARY debug ${Diluculum_LIBRARY_DEBUG} optimized ${Diluculum_LIBRARY_RELEASE} )
 endif()
 
-if( Diluculum_LIBRARY_RELEASE AND NOT FWU_LIBRARY_DEBUG )
-	set( Diluculum_LIBRARY_DEBUG ${FWU_LIBRARY_RELEASE} )
-	set( Diluculum_LIBRARY ${FWU_LIBRARY_RELEASE} )
+if( Diluculum_LIBRARY_RELEASE AND NOT Diluculum_LIBRARY_DEBUG )
+	set( Diluculum_LIBRARY_DEBUG ${Diluculum_LIBRARY_RELEASE} )
+	set( Diluculum_LIBRARY ${Diluculum_LIBRARY_RELEASE} )
 endif()
 
-if( Diluculum_LIBRARY_DEBUG AND NOT FWU_LIBRARY_RELEASE )
-	set( Diluculum_LIBRARY_RELEASE ${FWU_LIBRARY_DEBUG} )
-	set( Diluculum_LIBRARY ${FWU_LIBRARY_DEBUG} )
+if( Diluculum_LIBRARY_DEBUG AND NOT Diluculum_LIBRARY_RELEASE )
+	set( Diluculum_LIBRARY_RELEASE ${Diluculum_LIBRARY_DEBUG} )
+	set( Diluculum_LIBRARY ${Diluculum_LIBRARY_DEBUG} )
 endif()
 
-if( NOT Diluculum_INCLUDE_DIR OR NOT FWU_LIBRARY )
+if( NOT Diluculum_INCLUDE_DIR OR NOT Diluculum_LIBRARY )
 	message( FATAL_ERROR "Diluculum not found." )
 else()
-	message( "Diluculum found: ${FWU_INCLUDE_DIR}" )
+	message( "Diluculum found: ${Diluculum_INCLUDE_DIR}" )
 endif()
