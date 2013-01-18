@@ -45,6 +45,10 @@ add_library(Diluculum STATIC ${DiluculumSources})
 
 target_link_libraries(Diluculum ${LUA_LIBRARIES})
 
+set_target_properties( Diluculum PROPERTIES DEBUG_POSTFIX -s-d )
+set_target_properties( Diluculum PROPERTIES RELEASE_POSTFIX -s )
+set_target_properties( Diluculum PROPERTIES MINSIZEREL_POSTFIX -s )
+
 if(${CMAKE_SYSTEM_NAME} MATCHES Linux)
     target_link_libraries(Diluculum dl)
 endif(${CMAKE_SYSTEM_NAME} MATCHES Linux)
