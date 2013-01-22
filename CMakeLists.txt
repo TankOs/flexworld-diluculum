@@ -41,7 +41,7 @@ set(DiluculumSources
     Sources/LuaVariable.cpp
     Sources/LuaWrappers.cpp)
 
-add_library(Diluculum STATIC ${DiluculumSources})
+add_library(Diluculum SHARED ${DiluculumSources})
 
 target_link_libraries(Diluculum ${LUA_LIBRARIES})
 
