@@ -43,7 +43,9 @@ set(DiluculumSources
 
 add_library(Diluculum SHARED ${DiluculumSources})
 
-target_link_libraries(Diluculum ${LUA_LIBRARIES})
+if(${CMAKE_SYSTEM_NAME} MATCHES Win)
+	target_link_libraries(Diluculum ${LUA_LIBRARIES})
+endif()
 
 set_target_properties( Diluculum PROPERTIES DEBUG_POSTFIX -d )
 
